@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: gdh2
+      POSTGRES_USER: gdh2
+      POSTGRES_PASSWORD: gdh2
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_gdh2:/var/lib/postgresql/data
+
+volumes:
+  pgdata_gdh2:
