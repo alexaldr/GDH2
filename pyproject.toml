@@ -2,7 +2,7 @@
 name = "gdh2"
 version = "0.1.0"
 description = "Guardião das Horas 2.0 — controle de escala, banco de horas e ajuda de custo."
-authors = ["Alex Almeida <you@example.com>"]
+authors = ["Alex Almeida <alex.aldr@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "gdh2", from = "src" }]
 
