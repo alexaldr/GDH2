@@ -5,30 +5,42 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 - **Controle da jornada e carga horária** (administrativa e operacional).
 - **Escalas ordinárias** (publicação por ciclo e transparência ao militar).
 - **Banco de horas** (créditos/débitos e compensações).
-- **Cálculo e visualização de pagamentos indenizatórios** relacionados à jornada (ex.: ajuda de custo para alimentação, conforme normas vigentes).
+- **Cálculo e visualização de pagamentos indenizatórios** relacionados à jornada, com ênfase na **Ajuda de Custo para Despesas com Alimentação** (Decreto nº 49.006/2025 e Resoluções COFIN/CBMMG).
 - **Relatórios mensais e trimestrais** por escopo/unidade, com **exportação do que estiver renderizado**.
 - **Compatibilidade com dados legados** e prevenção de duplicidades (ex.: não gerar fechamento/relatório se já existir registro no legado para o mesmo período).
 
-> Base normativa mínima (trechos literais):
->
-> - **Lei 5.301/1969 (EMEMG), §3º e §4º (acrescidos por LC 168/2022)**  
->   “**As escalas ordinárias** de trabalho dos militares serão publicadas em **ciclos de sete dias**, com no mínimo sete dias de antecedência, e **inseridas no sistema de dados** da instituição para acompanhamento e controle.”  
->   “Os militares terão **livre acesso** à respectiva escala de trabalho e ao respectivo **banco de horas**, por meio de acesso a **sistema informatizado específico** (…)”
->
-> - **Lei Complementar 127/2013, art. 1º**  
->   “A carga horária semanal de trabalho (…) será de **quarenta horas semanais**, ressalvado o disposto no art. 15 da Lei Estadual nº 5.301/1969.”
->
-> - **Resolução CBMMG nº 1.265/2025, art. 11**  
->   “A jornada operacional terá a duração de **24 horas** (…) seguida de **72 horas de descanso e folga**.”  
->   “A cada **21 plantões** de 24 horas (…) **compensação de 24 horas de crédito**.”
->
-> - **Decreto nº 49.006/2025, art. 2º**  
->   “A ajuda de custo (…) será paga mensalmente (…) **na proporção dos dias efetivamente trabalhados**, sendo **vedada** (…) de forma cumulativa com outros benefícios (…) de mesma finalidade.”
->
-> - **Memorando Técnico Conjunto 02/2025 (DRH-PMMG/DRH-CBMMG)**  
->   “O cálculo (…) considerará os **dias efetivamente trabalhados**, levando-se em consideração as **peculiaridades das escalas**.”  
->   “O valor (…) será determinado com base na **escala habitual registrada** nos sistemas informatizados (…)”  
->   “Créditos e débitos de horas (…) serão compensados e ajustados no cômputo da jornada mensal e **não impactarão** o valor da ajuda de custo (…)”
+## Fontes normativas do projeto (Ajuda de Custo)
+
+> **Objetivo desta seção:** deixar explícito, com base na “literatura” do projeto, **o que manda** no cálculo e **como o sistema deve se adaptar** às alterações normativas por vigência.
+
+- **Decreto nº 49.006, de 12/03/2025 (texto atualizado)**  
+  - Art. 2º: “paga mensalmente (…) na proporção dos dias efetivamente trabalhados” e vedação de cumulação com benefícios de mesma finalidade.  
+  - Art. 2º, §4º: “É vedada a acumulação de mais de uma ajuda de custo por dia efetivamente trabalhado.”  
+  - Art. 2º, §5º, II, “a”: no plantão que começa em um dia e termina em outro, paga “vinculada ao plantão do dia do seu início”.  
+  - Art. 2º, §6º: veda “aproveitamento” das horas que ultrapassem o dia de início para nova ajuda de custo.  
+  - Art. 1º, §4º e §5º (incluídos pelo Decreto nº 49.111/2025): permite **parcela fixa + parcela variável (metas)** e permite **limitação do valor máximo mensal** por resolução conjunta com o COFIN.
+- **Resolução Conjunta COFIN/CBMMG nº 001, de 14/03/2025**  
+  - Parcela única (fixa) de **R$ 50,00 por dia efetivamente trabalhado**.  
+  - **Teto mensal total: R$ 1.100,00.**  
+  - Autoriza **adequação dos valores diários** para jornadas operacionais específicas, visando percepção máxima do teto, mantida jornada mínima (6h/dia) e carga horária mínima (30h/semana).
+- **Memorando Técnico Conjunto nº 02/2025 (DRH PMMG / DRH CBMMG)**  
+  - Define **critérios para cômputo de horas/turnos** para fins da ajuda de custo.  
+  - Tabela “Apêndice Único”: **valor de referência por turno de serviço** (ex.: até 24h → R$ 160,00).  
+  - Define que o valor é baseado na **escala habitual registrada**, sem suplementação por extrapolação do turno e sem impacto de créditos/débitos do banco de horas.
+- **Resolução Conjunta COFIN/CBMMG nº 002, de 15/10/2025 (vigente informada: “COFIN 002”)**  
+  - Ajuda de custo por dia efetivamente trabalhado com **composição**:
+    - **parcela fixa: R$ 50,00/dia**
+    - **parcela variável: até R$ 25,00/dia**, vinculada a metas do **Plano de Metas e Indicadores** (Anexo I), proporcional ao cumprimento.
+  - **Tetos mensais separados:** fixa R$ 1.100,00 + variável R$ 550,00 = **total R$ 1.650,00**.
+  - Regra de metas:
+    - considera metas do **bimestre anterior**
+    - só paga variável se atingir **mínimo de 70%**
+    - paga pela **média percentual do bimestre**
+    - não há complementação posterior (“sem resíduo” para variável).
+
+> **Conclusão prática (de engenharia):** o cálculo da Ajuda de Custo precisa ser **parametrizado por vigência** e suportar **dois modos de apuração**:
+> 1) por “dia” (regime diário/administrativo), e  
+> 2) por “turno/plantão” (regime operacional), com tabela do Memorando e as vedações do Decreto.
 
 ---
 
@@ -37,8 +49,8 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 ## Objetivos
 
 1. Centralizar e padronizar o **controle de jornada** (administrativa e operacional) e seu reflexo em **créditos/débitos**.
-2. Garantir **publicidade e acesso** do militar a **escala** e **banco de horas** (conforme Lei 5.301/1969, §3º e §4º).
-3. Fornecer uma **tela de visualização de pagamento** por mês, com **memória de cálculo** (explicação do valor).
+2. Garantir **publicidade e acesso** do militar a **escala** e **banco de horas** (Lei nº 5.301/1969, §3º e §4º).
+3. Fornecer uma **tela de visualização de pagamento** por mês, com **memória de cálculo** e rastreabilidade normativa (vigência, parâmetros e bases usadas).
 4. Gerar **relatórios renderizados** (mensal/trimestral) por escopo, com **exportação** do que a UI exibe.
 5. Operar com **compatibilidade/convivência com legado** e evitar inconsistências.
 
@@ -48,12 +60,15 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 - **Escalas** (especialmente operacional 24x72 e escalas administrativas).
 - Registro de eventos que impactam jornada: **serviços/plantões, faltas, afastamentos, férias**, compensações.
 - **Banco de horas**: extrato auditável + saldo por período.
-- **Pagamentos**: tela de visualização e cálculo por mês (com teto/limites conforme regras vigentes) **[ABERTO]**.
+- **Ajuda de Custo (Alimentação)**: tela de visualização e cálculo por competência, com:
+  - decomposição **parcela fixa / variável** (COFIN 002),
+  - aplicação da **tabela por turno** (Memorando 02/2025) quando aplicável,
+  - aplicação de **tetos** por vigência.
 - Relatórios mensais/trimestrais por escopo e exportação.
 
 ## Fora do escopo imediato (ou removido)
 
-- **Importações** (módulo antigo): decisão de **remover** para não conflitar com arquitetura atual.  
+- **Importações** (módulo antigo): decisão de **remover** para não conflitar com arquitetura atual.
 - **Exportações genéricas de banco**: decisão de manter **apenas export do que estiver renderizado** (relatórios/consultas) **[ABERTO: implementação detalhada]**.
 
 ---
@@ -93,13 +108,46 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 - Permitir ajustes controlados (com justificativa e log).
 - Disponibilizar acesso ao militar (publicidade).
 
-## RF-08 Pagamentos (tela de visualização)
-- Selecionar mês.
-- Listar militares do escopo.
-- Calcular valor a pagar por militar (ex.: ajuda de custo alimentação) com memória de cálculo.
-- Permitir filtros (incluindo um **campo percentual** para simulação/ajuste) — decisão do projeto.
+## RF-08 Ajuda de Custo (Alimentação) — Visualização e Memória de Cálculo
 
-> Observação crítica: houve divergência prática relatada: militar em **24x72 sem faltas** estaria recebendo **teto máximo**, e uma simulação anterior não refletiu isso. Regras exatas de teto e parâmetros devem ser consolidadas com a norma atual **[ABERTO]**.
+### RF-08.1 Tela principal (por competência)
+- Selecionar mês (competência).
+- Listar militares do escopo.
+- Calcular valor por militar:
+  - **parcela fixa**
+  - **parcela variável** (quando aplicável)
+  - total
+  - tetos aplicados
+- Mostrar claramente qual norma foi aplicada (COFIN 001 ou COFIN 002), com vigência.
+
+### RF-08.2 Memória de cálculo (detalhada por militar)
+A memória de cálculo deve mostrar:
+- Base de apuração:
+  - dias efetivamente trabalhados (regime diário) **e/ou**
+  - turnos/plantões considerados (regime operacional)
+- Regras do Decreto aplicadas:
+  - **no máximo 1 por dia** (se houver 2 turnos no mesmo dia, escolher o “de maior valor” quando aplicável)
+  - plantão que atravessa o dia: conta pelo **dia do início**
+- Aplicação da tabela do Memorando (quando turno):
+  - duração do turno → valor de referência → soma do mês
+- Aplicação dos tetos por parcela (COFIN 002):
+  - teto fixa (R$ 1.100)
+  - teto variável (R$ 550)
+  - total (R$ 1.650)
+- Metas (quando variável existir):
+  - qual **bimestre de referência** foi usado
+  - percentual de execução
+  - regra de corte (≥ 70% paga; < 70% não paga)
+  - cálculo “proporcional” (ver RB-07.6)
+
+### RF-08.3 Cadastro/parametrização (admin)
+Para evitar “código hardcoded”, o sistema deve permitir:
+- Cadastrar **parâmetros por vigência** (COFIN 001, COFIN 002 e futuras).
+- Cadastrar **resultado das metas por bimestre** (percentual final do bimestre).
+- Cadastrar **mapeamento competência → bimestre de referência** para parcela variável (necessário por causa da regra de transição da COFIN 002).
+
+> Observação: você pediu “prefiro usar um filtro com campo onde ajusto a porcentagem”.  
+> Isso vira requisito de UX: um campo (admin) para registrar/simular o percentual do bimestre, com separação entre **valor oficial** e **simulação** **[ABERTO: decisão de produto]**.
 
 ## RF-09 Relatórios e Exportação
 - Gerar relatórios mensais e trimestrais (renderizados em tabela).
@@ -119,29 +167,21 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 - Frontend: **Jinja + HTMX** (sem SPA React/Vue).
 - UI deve ser implementável por IA com padrões e componentes reutilizáveis.
 
-## RNF-02 Segurança
-- Autenticação obrigatória.
-- Autorização por perfil + escopo.
-- Auditoria de operações sensíveis (ajustes de saldo, edições de eventos, fechamentos).
+## RNF-02 Rastreabilidade normativa (Ajuda de Custo)
+- Todo cálculo deve registrar:
+  - **qual política/vigência** foi aplicada
+  - parâmetros numéricos (valores diários, tetos, tabela de turnos)
+  - bimestre e percentual de metas (quando houver variável)
+- A memória de cálculo deve ser reprodutível (mesmo resultado para os mesmos dados).
 
-## RNF-03 Observabilidade
-- Logs estruturados de ações e erros.
-- Registro de auditoria persistente (tabela `audit_log`) **[INFERIDO]**.
+## RNF-03 Auditoria e compliance
+- Ajustes de parâmetro/meta devem registrar “quem/quando/por quê”.
+- Exportação de relatórios deve permitir auditoria do que foi exibido.
 
 ## RNF-04 Performance
 - Listagens paginadas.
 - Parciais HTMX para reduzir reload completo.
-- Consultas com índices por `admin_scope_id`, `militar_id`, `competencia`.
-
-## RNF-05 Evolução e Extensibilidade
-- Separar regras de negócio em serviços.
-- Padronizar contratos HTMX e macros.
-- Permitir no futuro endpoints JSON para módulos específicos **[INFERIDO]**.
-
-## RNF-06 Processo de Desenvolvimento (Git)
-- Uso de branches feature para evitar deploy em `main`.
-- Commits com mensagens em inglês (padrão do projeto).
-- PRs para integrar em ambiente seguro.
+- Índices por `admin_scope_id`, `militar_id`, `competencia`.
 
 ---
 
@@ -161,43 +201,128 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 - Escala ordinária do mês publicada até **dia 20 do mês anterior** (Res. 1.265/2025, art. 22).
 - Escalas ordinárias publicadas em ciclos de 7 dias e inseridas no sistema (Lei 5.301/1969, §3º).
 
-## RB-04 Controle e Publicidade do Controle de Jornada
-- Controle executado por chefias; até haver sistema, usa planilha padrão; objetivo de sistema acessível aos militares (Res. 1.265/2025, art. 20, §1º).
+## RB-04 Publicidade do Controle de Jornada e Banco de Horas
 - Militares devem ter livre acesso à escala e banco de horas em sistema informatizado (Lei 5.301/1969, §4º).
 
-## RB-05 Horário Alternativo para Estudos (ITRH 247/2013)
-- Possível adequar horários para militares que estudam (Art. 2º).
-- Horário alternativo exige **reposição/compensação** da jornada (Art. 3º e 10º).
-- Medidas de compensação: reduzir almoço, atividades quarta à tarde, chamadas em folga, encargos móveis (Art. 11).
+---
 
-## RB-06 Jornada Reduzida (20h semanais) — Militar responsável por pessoa com deficiência (ITRH 301/2025)
-- Benefício temporário, validade **6 meses**, renovável (Art. 2º).
-- Não pode ser designado para serviço operacional, com exceções específicas (Art. 6º).
-- Processo e documentação via SEI, com sigilo por dados sensíveis (Art. 7º, 8º, 10º).
-- Unidade deve manter controle e comunicar cessação/renovação (Art. 17).
+## RB-07 Ajuda de Custo (Alimentação) — Regras consolidadas
 
-## RB-07 Ajuda de custo para despesas com alimentação (Decreto 49.006/2025 + Memorando 02/2025)
-### Condições gerais
-- Natureza indenizatória; paga mensalmente em pecúnia (Art. 2º).
-- Proporcional aos **dias efetivamente trabalhados** (Art. 2º).
-- Vedada cumulatividade com benefícios de mesma finalidade (Art. 2º).
-- Regra mínima: carga horária ≥ **6h diárias** e **30h semanais** (Art. 1º, §1º).
-- Descontos por férias/afastamentos/faltas conforme decreto (Art. 2º, §2º e §3º).
+### RB-07.1 Conceitos essenciais (para implementação)
+- **Competência**: mês selecionado para visualização/cálculo.
+- **Dia efetivamente trabalhado**:
+  - regime diário: dia em que cumpriu a jornada mínima (6h), considerando também hipóteses do Art. 3º do Decreto (curso autorizado, serviço externo, viagem, etc.).
+  - regime de plantão: o Decreto estabelece que, se o plantão atravessa o dia, o pagamento é **vinculado ao dia do início**.
+- **Vedação “mais de uma por dia”**: não pode pagar duas ajudas no mesmo dia efetivamente trabalhado.
+- **Regime operacional (plantão/turno)**: o Memorando 02/2025 estabelece “valor de referência por turno” e orienta o cômputo para essas jornadas.
 
-### Diretrizes operacionais (Memorando 02/2025)
-- Considerar peculiaridades das escalas ao calcular dias efetivamente trabalhados.
-- Valor determinado pela **escala habitual registrada** nos sistemas.
-- Extrapolação do turno não suplementa valor.
-- Créditos/débitos de horas não impactam o valor da ajuda de custo.
-- Existe teto mensal definido por resoluções conjuntas COFIN/PMMG e COFIN/CBMMG **[ABERTO: parametrização atual e atualização mencionada]**.
+### RB-07.2 Elegibilidade mínima
+- Jornada mínima: **≥ 6h diárias e ≥ 30h semanais** (Decreto 49.006/2025, art. 1º, §1º; COFIN 001/002 repetem a regra).
+- “Efetivo exercício” inclui teletrabalho (Decreto art. 1º, §2º; COFIN 001/002).
 
-## RB-08 Teto / Limites e Atualizações Normativas
-- Foi relatada **atualização de resolução** que muda teto e outros pontos.
-- A regra exata do teto para o cálculo do pagamento mensal (especialmente operacional 24x72) está **[ABERTO]** e precisa ser consolidada com a versão vigente dos parâmetros (resoluções conjuntas COFIN/PMMG e COFIN/CBMMG citadas no memorando).
+### RB-07.3 Parcelas e tetos por vigência
 
-## RB-09 Férias com Acréscimos
-- UI deve calcular “fim com acréscimo” = fim original + dias de acréscimo (regras internas do sistema).
-- Deve preservar fim original para auditoria e transparência.
+#### Vigência COFIN 001 (a partir de 13/03/2025)
+- Parcela única (fixa): **R$ 50/dia efetivamente trabalhado**.
+- Teto mensal: **R$ 1.100** (total).
+- Autoriza adequação para jornada operacional específica (sem mudar teto).
+
+#### Vigência COFIN 002 (a partir de 15/10/2025)
+- Parcela fixa: **R$ 50/dia** (teto mensal **R$ 1.100**).
+- Parcela variável: **até R$ 25/dia** (teto mensal **R$ 550**).
+- Total máximo (somatório): **R$ 1.650**.
+- Variável:
+  - depende do **bimestre anterior**
+  - paga se meta bimestral ≥ **70%**
+  - paga proporcionalmente à média do bimestre
+  - sem complementação posterior.
+
+> **Regra de transição (COFIN 002):**
+> - outubro/2025 e novembro/2025: paga **somente parcela fixa**.
+> - 5º bimestre/2025 avaliado em novembro/2025 → variável paga em dezembro/2025 e janeiro/2026.
+> - 6º bimestre/2025 avaliado em janeiro/2026 → variável paga em fevereiro/2026 e março/2026.
+
+### RB-07.4 Tabela de referência por turno (Memorando 02/2025)
+Apêndice Único – “Valor de referência da Ajuda de Custo por turno de serviço” (a partir de março/2025):
+
+| Turno de serviço | Valor de referência |
+|---|---:|
+| Até 06h30 | 50,00 |
+| 06h31 até 09h00 | 70,00 |
+| 09h01 até 12h00 | 100,00 |
+| 12h01 até 15h00 | 120,00 |
+| 15h01 até 18h00 | 140,00 |
+| 18h01 até 21h00 | 150,00 |
+| 21h01 até 24h00 | 160,00 |
+
+Outras regras operacionais do Memorando:
+- o valor é determinado com base na **escala habitual registrada**;
+- não há suplementação quando extrapola turno;
+- créditos/débitos da escala são compensados no banco de horas, **sem impactar a ajuda de custo**.
+
+### RB-07.5 Regras do Decreto que afetam plantões (muito relevante ao 24x72)
+- **No máximo 1 ajuda de custo por dia efetivamente trabalhado**.
+- Se o plantão começa em um dia e termina em outro, recebe a ajuda **do dia do início**.
+- Não pode “aproveitar” as horas do dia seguinte para gerar nova ajuda.
+
+### RB-07.6 Algoritmo de cálculo (como implementaremos)
+
+#### RB-07.6.1 Resolver a política por competência (Policy Resolver)
+1) Determinar qual Resolução COFIN aplica-se à competência (COFIN 001 x COFIN 002), por data de vigência.
+2) Ativar/Desativar parcela variável conforme regra de transição e mapeamento competência→bimestre.
+
+> **Implementação:** `AjudaCustoPolicyResolver.resolve(competencia) -> policy`
+
+#### RB-07.6.2 Montar a base “efetivamente trabalhada”
+Para cada militar na competência:
+1) Coletar eventos/lancamentos de jornada e/ou turnos programados (escala habitual), conforme disponibilidade do sistema.
+2) Filtrar:
+   - **conta** como efetivamente trabalhado (inclui hipóteses do Art. 3º do Decreto) **[ABERTO: lista completa em tabela no sistema]**
+   - **não é devida** (ex.: falta, férias, sobreaviso, feriados/ponto facultativo sem escala, etc., conforme Memorando item 2.3)
+3) Agrupar por “unidade de pagamento”:
+   - regime diário: por dia
+   - regime de plantão: por turno, mas “chaveado” no **dia do início**
+4) Se houver mais de um turno no mesmo dia (situação rara, mas possível em acumulação lícita / ajustes):
+   - escolher o **de maior valor** (Decreto art. 2º, §5º, II, “b”) e obedecer §4º.
+
+#### RB-07.6.3 Cálculo da parcela fixa
+- **Regime diário:** `dias_validos × 50`, limitado a `teto_fixo`.
+- **Regime plantão/operacional:** somar “valor de referência por turno” da tabela do Memorando e limitar ao teto aplicável.
+
+> Nota: isso atende a “adequação dos valores diários” prevista nas Resoluções COFIN e explica o cenário real do operacional 24x72:  
+> 7 plantões × 160 = 1120 → teto fixa 1100 (bate teto “em normalidade”).
+
+#### RB-07.6.4 Cálculo da parcela variável (COFIN 002)
+**Regra normativa (certa):**
+- se meta_bimestre < 70% → variável = 0
+- se meta_bimestre ≥ 70% → proporcional à média do bimestre, limitada ao teto variável.
+
+**Base de cálculo (ponto técnico com interpretação):**
+- **[INFERIDO + justificativa]**: usar “dias equivalentes” derivados da base fixa, para manter coerência com a adequação do operacional:
+  - `dias_equivalentes = parcela_fixa_bruta / 50`
+  - `variavel_bruta = dias_equivalentes × 25 × (meta_percentual/100)`
+  - `variavel = min(variavel_bruta, teto_variavel)`
+- **[ABERTO – alternativa]**: calcular variável estritamente por “dias calendário” distintos com jornada válida (1 por dia), o que tende a reduzir a variável do operacional; esta alternativa deve ser validada contra orientações internas/folha.
+
+> **Decisão proposta:** implementar as duas estratégias e escolher por parâmetro `variable_base_mode` (DEFAULT: `EQUIVALENT_DAYS`) até validação final.
+
+#### RB-07.6.5 Regras de abatimento/compensação
+- DSP/diárias: o Memorando define débito do valor da parcela alimentação prevista na diária (glosa/compensação em folha).
+- Jornada reduzida: para cada escala não cumprida, abate uma ajuda, limitado a 3 por semana.
+
+> **[ABERTO]**: Como representar “compensação em folha subsequente” no sistema:
+> - opção A: calcular “valor devido” por competência e registrar “glosa a aplicar” em competência subsequente;
+> - opção B: calcular diretamente o “valor que será pago na folha X” (competência de apuração vs mês de pagamento).
+
+### RB-07.7 Exemplo (para validar com a realidade)
+Militar operacional 24x72, mês com 7 plantões de 24h, sem faltas:
+- Base por turno (Memorando): 7 × 160 = 1120
+- Parcela fixa: teto 1100 → **1100**
+- Parcela variável (meta 100%, base por dias equivalentes):
+  - dias_equivalentes = 1100/50 = 22
+  - variável bruta = 22 × 25 = 550
+  - teto variável = 550 → **550**
+- Total (COFIN 002): 1100 + 550 = **1650 (teto total)**
 
 ---
 
@@ -207,183 +332,144 @@ O **Guardião das Horas** é um sistema web interno para o **CBMMG** (Corpo de B
 
 ## Entidades e campos (tabelas)
 
-### 1) `admin_scopes` **[INFERIDO]**
-- `id` (PK)
-- `name`
-- `code` (ex.: “7BBM”, “6CIAIND”)
-- `is_active`
+### Núcleo (já previsto no projeto)
+- `admin_scopes` **[INFERIDO]**
+- `units` **[INFERIDO]**
+- `militares`
+- `militar_lotacoes` **[INFERIDO]**
+- `militar_regimes` **[INFERIDO]**
+- `ferias`, `ferias_acrescimos` **[INFERIDO]**
+- `escala_publicacoes`, `escala_itens` **[INFERIDO]**
+- `lancamentos_jornada` **[INFERIDO]**
+- `militar_day_balances` **[EXISTENTE no projeto; schema real: ABERTO]**
+- `users`, `roles`, `audit_log` **[INFERIDO]**
 
-### 2) `units` (unidades/subunidades) **[INFERIDO]**
-- `id` (PK)
-- `admin_scope_id` (FK)
-- `name`
-- `parent_unit_id` (FK self, nullable)
+## Ajuda de Custo (novas tabelas para refletir COFIN 001/002 e futuras)
 
-### 3) `militares`
-Campos mínimos (MVP):
-- `id` (PK)
-- `matricula` (único)
-- `nome_completo`
-- `nome_guerra`
-- `posto_graduacao` (texto/enum) **[ABERTO: tabela de referência]**
-- `situacao` (ativo/inativo/agregado/…)
-- `created_at`, `updated_at`
+### 1) `ajuda_custo_policies` (parâmetros por vigência) **[INFERIDO]**
+Armazena “o que vale” em cada período.
 
-### 4) `militar_lotacoes` (histórico) **[INFERIDO]**
+Campos recomendados:
 - `id` (PK)
-- `militar_id` (FK)
-- `admin_scope_id` (FK)
-- `unit_id` (FK)
-- `inicio` (date)
-- `fim` (date, nullable)
+- `nome` (ex.: “COFIN/CBMMG 001/2025”, “COFIN/CBMMG 002/2025”)
+- `vigencia_inicio` (date)
+- `vigencia_fim` (date, nullable)
+- `fixo_valor_dia` (decimal) — ex.: 50
+- `variavel_valor_dia_max` (decimal) — ex.: 0 (COFIN 001) ou 25 (COFIN 002)
+- `teto_fixo_mensal` (decimal) — ex.: 1100
+- `teto_variavel_mensal` (decimal) — ex.: 0 (COFIN 001) ou 550 (COFIN 002)
+- `total_teto_mensal` (decimal) — ex.: 1100 ou 1650 (pode ser derivado)
+- `meta_min_percent` (decimal) — ex.: 70 (quando houver variável)
+- `variable_base_mode` (enum) — `EQUIVALENT_DAYS` | `CALENDAR_DAYS` (**ver RB-07.6.4**)
+- `source_ref` (texto) — referência da norma (arquivo, data)
 
-### 5) `militar_regimes` (histórico de regime/escala habitual) **[INFERIDO]**
+### 2) `ajuda_custo_turno_valores` (tabela do Memorando por vigência) **[INFERIDO]**
+Campos:
 - `id` (PK)
-- `militar_id` (FK)
-- `tipo_regime` (ADMIN | OPERACIONAL_24x72 | COBOM | BOA | SSCIP | REDUZIDA_20H | …)
-- `carga_horaria_semanal` (int, default 40; 20 se reduzida)
-- `escala_habitual_codigo` (ex.: “24x72”) **[ABERTO: catálogo de escalas]**
-- `inicio`, `fim`
+- `vigencia_inicio`, `vigencia_fim`
+- `min_minutes` (int)
+- `max_minutes` (int)
+- `valor` (decimal)
 
-### 6) `ferias`
+> Observação: para 24h, `min_minutes=1261` `max_minutes=1440` `valor=160`.
+
+### 3) `ajuda_custo_metas_bimestre` (resultado do bimestre) **[INFERIDO]**
+Campos:
 - `id` (PK)
-- `militar_id` (FK)
-- `inicio` (date)
-- `fim_original` (date)
-- `observacao` (text, nullable)
+- `ano` (int)
+- `bimestre_num` (int) — 1..6
+- `period_start` (date)
+- `period_end` (date)
+- `percent_execucao` (decimal) — nota/percentual final
+- `status` (enum) — `PROVISORIO` | `DEFINITIVO` | `RECORRIDO`
+- `avaliado_em` (date)
+- `observacao` (text)
+- `source_ref` (text)
 
-### 7) `ferias_acrescimos` **[INFERIDO]**
+### 4) `ajuda_custo_competencia_referencia` (mês → bimestre usado) **[INFERIDO]**
+Motivo: a COFIN 002 traz regra de transição (dez/2025 e jan/2026 usam 5º bimestre etc.).  
+Campos:
 - `id` (PK)
-- `ferias_id` (FK)
-- `dias_acrescimo` (int)
-- `motivo` (text, nullable)
-- `created_at`
-
-> UI exibirá:
-> - fim_original
-> - fim_com_acrescimo = fim_original + SUM(dias_acrescimo)
-
-### 8) `escala_publicacoes` **[INFERIDO]**
-- `id` (PK)
-- `admin_scope_id` (FK)
-- `unit_id` (FK, nullable)
 - `competencia` (YYYY-MM)
-- `status` (RASCUNHO | PUBLICADA | CANCELADA)
-- `publicada_em` (datetime, nullable)
-- `versao` (int)
-- `observacao`
+- `bimestre_ano` (int)
+- `bimestre_num` (int)
+- `motivo` (text) — “regra de transição COFIN 002”, “regra geral”, etc.
 
-### 9) `escala_itens` (ciclos/turnos) **[INFERIDO]**
-- `id` (PK)
-- `escala_publicacao_id` (FK)
-- `militar_id` (FK)
-- `data_inicio` (datetime)
-- `data_fim` (datetime)
-- `tipo_turno` (PLANTAO_24H | EXPEDIENTE | COBOM_8H | …)
-- `carga_prevista_horas` (int)
-- `observacao`
+## Pagamentos (ajuste para decomposição fixa/variável)
 
-### 10) `lancamentos_jornada` (eventos reais) **[INFERIDO]**
-- `id` (PK)
-- `militar_id` (FK)
-- `admin_scope_id` (FK)
-- `competencia` (YYYY-MM)
-- `tipo` (TRABALHADO | FALTA | AFASTAMENTO | FERIAS | DSP_DIARIA | COMPENSACAO | AJUSTE | …)
-- `data_inicio`, `data_fim`
-- `horas` (int, nullable)
-- `justificativa`
-- `created_by` (FK user)
-- `created_at`
+### `pagamentos_competencia` (ajuste)
+Adicionar:
+- `policy_id` (FK ajuda_custo_policies)
+- `bimestre_ref_id` (FK ajuda_custo_metas_bimestre, nullable)
+- `meta_percent_usado` (decimal, nullable) — snapshot
+- `is_simulacao` (bool) / `meta_percent_simulado` (decimal) **[ABERTO]**
 
-### 11) `militar_day_balances` (saldo) **[EXISTENTE no projeto]**
-- Estrutura exata **[ABERTO]** (o nome foi citado, mas não os campos).
-- Deve guardar saldo de dias/horas por militar e/ou por competência.
+### `pagamentos_itens` (ajuste)
+Adicionar:
+- `valor_fixo_bruto`, `valor_fixo_teto_aplicado`
+- `valor_variavel_bruto`, `valor_variavel_teto_aplicado`
+- `valor_total`
+- `glosas_total` (ex.: DSP/diárias) **[ABERTO]**
+- `memoria_calculo` (json/text) — deve carregar: turnos, dias, parâmetros, tetos, meta, estratégia.
 
-### 12) `pagamentos_competencia` **[INFERIDO]**
-- `id` (PK)
-- `admin_scope_id` (FK)
-- `competencia` (YYYY-MM)
-- `status` (ABERTO | FECHADO)
-- `percentual_ajuste` (decimal) — filtro/campo ajustável para simulação
-- `teto_valor` (decimal) **[ABERTO: origem normativa]**
-- `gerado_em`
-- `gerado_por`
+---
 
-### 13) `pagamentos_itens` **[INFERIDO]**
-- `id` (PK)
-- `pagamento_competencia_id` (FK)
-- `militar_id` (FK)
-- `dias_elegiveis` (int)
-- `valor_base` (decimal)
-- `valor_calculado` (decimal)
-- `valor_teto_aplicado` (decimal)
-- `memoria_calculo` (json/text)
+## Relacionamentos (principais)
+- `ajuda_custo_policies` 1—N `pagamentos_competencia`
+- `ajuda_custo_metas_bimestre` 1—N `pagamentos_competencia` (via bimestre de referência)
+- `ajuda_custo_turno_valores` usado por `AjudaCustoCalculator` (não precisa FK direta em pagamentos; salvar snapshot em memória de cálculo)
 
-### 14) `relatorios_fechamentos` **[INFERIDO]**
-- `id` (PK)
-- `admin_scope_id` (FK)
-- `tipo` (MENSAL | TRIMESTRAL)
-- `period_start`, `period_end`
-- `status`
-- `gerado_em`, `gerado_por`
-- `hash_render` (para garantir export do que foi renderizado) **[INFERIDO]**
-- Compatibilidade com legado: impedir duplicidade **[ABERTO: regra técnica]**
+---
 
-### 15) `users`, `roles`, `user_roles` **[INFERIDO]**
-- Controle de acesso e permissões.
+## Trechos SQL (DDL ilustrativo)
 
-### 16) `audit_log` **[INFERIDO]**
-- Log de ações: quem, quando, entidade, antes/depois, motivo.
-
-## Relacionamentos
-
-- `admin_scopes` 1—N `units`
-- `militares` 1—N `militar_lotacoes`
-- `militares` 1—N `militar_regimes`
-- `militares` 1—N `ferias`
-- `ferias` 1—N `ferias_acrescimos`
-- `escala_publicacoes` 1—N `escala_itens`
-- `militares` 1—N `escala_itens`
-- `militares` 1—N `lancamentos_jornada`
-- `pagamentos_competencia` 1—N `pagamentos_itens`
-
-## Migrações/compatibilidade com legado (se aplicável)
-
-### Regras/necessidades
-- Evitar gerar “fechamento/relatório” se já existir equivalente no legado para o mesmo período.
-- Manter integridade entre:
-  - saldos (`militar_day_balances`)
-  - férias lançadas
-  - conversões/correções históricas (casos de dias duplicados)
-
-### Estratégia sugerida **[INFERIDO]**
-- Criar tabela de “marcadores de legado” por período:
-  - `legacy_closures` com `admin_scope_id`, `tipo`, `period_start`, `period_end`, `legacy_id`.
-- Na geração de relatórios:
-  - checar `legacy_closures` antes de permitir gerar/fechar.
-
-## Trechos SQL (em blocos)
-
-### SQL — Bloqueio de duplicidade de fechamento por período (exemplo) **[INFERIDO]**
 ```sql
--- Exemplo: impedir duplicidade (lógica pode ser aplicada no app e/ou constraint)
--- Ajuste nomes conforme schema real.
-SELECT 1
-FROM relatorios_fechamentos
-WHERE admin_scope_id = :admin_scope_id
-  AND tipo = :tipo
-  AND period_start = :period_start
-  AND period_end = :period_end
-LIMIT 1;
-```
+-- Ajuda de Custo: parâmetros por vigência (exemplo)
+CREATE TABLE ajuda_custo_policies (
+  id INTEGER PRIMARY KEY,
+  nome TEXT NOT NULL,
+  vigencia_inicio DATE NOT NULL,
+  vigencia_fim DATE,
+  fixo_valor_dia NUMERIC NOT NULL,
+  variavel_valor_dia_max NUMERIC NOT NULL DEFAULT 0,
+  teto_fixo_mensal NUMERIC NOT NULL,
+  teto_variavel_mensal NUMERIC NOT NULL DEFAULT 0,
+  meta_min_percent NUMERIC,
+  variable_base_mode TEXT NOT NULL DEFAULT 'EQUIVALENT_DAYS',
+  source_ref TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-### SQL — Correção pontual de saldo em `militar_day_balances` (exemplo) **[ABERTO: campos reais]**
-```sql
--- Exemplo PSEUDO-SQL: necessário confirmar nomes das colunas.
--- Objetivo: zerar o saldo de dias/horas para militares específicos.
-UPDATE militar_day_balances
-SET saldo = 0
-WHERE militar_id IN (:militar1, :militar2, :militar3);
+CREATE TABLE ajuda_custo_turno_valores (
+  id INTEGER PRIMARY KEY,
+  vigencia_inicio DATE NOT NULL,
+  vigencia_fim DATE,
+  min_minutes INTEGER NOT NULL,
+  max_minutes INTEGER NOT NULL,
+  valor NUMERIC NOT NULL,
+  source_ref TEXT
+);
+
+CREATE TABLE ajuda_custo_metas_bimestre (
+  id INTEGER PRIMARY KEY,
+  ano INTEGER NOT NULL,
+  bimestre_num INTEGER NOT NULL,
+  period_start DATE NOT NULL,
+  period_end DATE NOT NULL,
+  percent_execucao NUMERIC NOT NULL,
+  status TEXT NOT NULL DEFAULT 'DEFINITIVO',
+  avaliado_em DATE,
+  source_ref TEXT,
+  observacao TEXT
+);
+
+CREATE TABLE ajuda_custo_competencia_referencia (
+  id INTEGER PRIMARY KEY,
+  competencia TEXT NOT NULL UNIQUE, -- 'YYYY-MM'
+  bimestre_ano INTEGER NOT NULL,
+  bimestre_num INTEGER NOT NULL,
+  motivo TEXT
+);
 ```
 
 ---
@@ -405,15 +491,22 @@ WHERE militar_id IN (:militar1, :militar2, :militar3);
 - `templates/` (Jinja)
 - `static/` (CSS/JS mínimo)
 
-### Módulos (Blueprints)
-- `auth`
-- `militares`
-- `escalas`
-- `jornada` (lançamentos)
-- `banco_horas`
-- `pagamentos`
-- `relatorios`
-- `admin` (cadastros base)
+### Serviço de Ajuda de Custo (proposta)
+Criar um módulo coeso:
+
+```text
+services/ajuda_custo/
+  policy_resolver.py       # escolhe COFIN 001/002 por vigência e decide se variável ativa
+  turno_table.py           # consulta tabela do memorando por vigência
+  metas_repo.py            # busca percentual do bimestre (e status)
+  competencia_ref.py       # mapeia competência -> bimestre (com override)
+  calculator.py            # AjudaCustoCalculator (fixo/variavel/glosas/memória)
+  memory_builder.py        # gera memória de cálculo estruturada
+```
+
+**Responsabilidade chave:** separar “literatura” (norma) da implementação:
+- as tabelas `ajuda_custo_*` são a materialização dos parâmetros normativos,
+- o `calculator` apenas aplica regras e registra memória.
 
 ## Frontend (telas/fluxos/componentes/etc)
 
@@ -435,28 +528,25 @@ templates/
     form.html
     table.html
     modal.html
+    badges.html
   pages/
-    militares/
-      index.html
-      _table.html
-      _modal.html
     pagamentos/
       index.html
       _table.html
       _calc_modal.html
+    admin/
+      ajuda_custo/
+        policies.html
+        metas.html
+        referencias.html
 ```
 
-### “Contrato HTMX” (padrões obrigatórios)
+### Contrato HTMX (padrões obrigatórios)
 - Listagens sempre atualizam `#results`
 - Modais sempre carregam em `#modal`
 - Endpoints retornam:
   - Página completa quando não-HTMX
   - Partial quando HTMX
-
-## Integrações (se houver)
-
-- Integração com SEI/SIGP é citada em normas (ex.: jornada reduzida exige lançamentos/controle), mas integração técnica direta não foi definida. **[ABERTO]**
-- Exportações: PDF/CSV a partir de tabelas renderizadas. **[ABERTO: biblioteca e layout]**
 
 ---
 
@@ -469,10 +559,14 @@ flowchart TD
   A[Login] --> B[Selecionar Escopo/Unidade]
   B --> C[Militares: listar e consultar]
   C --> D[Escalas: consultar/publicar]
-  D --> E[Lançamentos de Jornada: plantões, faltas, afastamentos, compensações]
-  E --> F["Apuração: Banco de Horas (crédito/débito)"]
-  F --> G[Pagamentos: selecionar mês e calcular valores]
-  G --> H[Relatórios: mensal/trimestral e export do renderizado]
+  D --> E[Lançamentos: plantões/faltas/afastamentos/férias/compensações]
+  E --> F[Banco de Horas: crédito/débito]
+  F --> G[Ajuda de Custo: selecionar mês]
+  G --> G1[Resolver Política por Vigência (COFIN 001/002)]
+  G1 --> G2[Montar Base: dias/turnos elegíveis]
+  G2 --> G3[Aplicar Tetos e Metas (bimestre)]
+  G3 --> G4[Gerar Memória de Cálculo]
+  G4 --> H[Relatórios: mensal/trimestral + export renderizado]
   H --> I[Fechamento e auditoria]
 ```
 
@@ -481,28 +575,16 @@ flowchart TD
 ```mermaid
 erDiagram
   ADMIN_SCOPES ||--o{ UNITS : contains
-  MILITARES ||--o{ MILITAR_LOTACOES : has
-  ADMIN_SCOPES ||--o{ MILITAR_LOTACOES : scopes
-  UNITS ||--o{ MILITAR_LOTACOES : assigns
-
-  MILITARES ||--o{ MILITAR_REGIMES : has
-  MILITARES ||--o{ FERIAS : has
-  FERIAS ||--o{ FERIAS_ACRESCIMOS : adds
-
-  ADMIN_SCOPES ||--o{ ESCALA_PUBLICACOES : publishes
-  ESCALA_PUBLICACOES ||--o{ ESCALA_ITENS : includes
-  MILITARES ||--o{ ESCALA_ITENS : scheduled
 
   MILITARES ||--o{ LANCAMENTOS_JORNADA : records
   ADMIN_SCOPES ||--o{ LANCAMENTOS_JORNADA : scopes
 
-  ADMIN_SCOPES ||--o{ PAGAMENTOS_COMPETENCIA : has
+  AJUDA_CUSTO_POLICIES ||--o{ PAGAMENTOS_COMPETENCIA : applies
+  AJUDA_CUSTO_METAS_BIMESTRE ||--o{ PAGAMENTOS_COMPETENCIA : references
+  AJUDA_CUSTO_COMPETENCIA_REFERENCIA ||--|| PAGAMENTOS_COMPETENCIA : maps
+
   PAGAMENTOS_COMPETENCIA ||--o{ PAGAMENTOS_ITENS : includes
   MILITARES ||--o{ PAGAMENTOS_ITENS : receives
-
-  ADMIN_SCOPES ||--o{ RELATORIOS_FECHAMENTOS : has
-
-  USERS ||--o{ AUDIT_LOG : writes
 ```
 
 ---
@@ -518,145 +600,96 @@ erDiagram
 5. **Escalas**
 6. **Lançamentos de Jornada**
 7. **Banco de Horas (Extrato)**
-8. **Pagamentos (Visualização por mês)**
-9. **Relatórios (Mensal/Trimestral)**
-10. **Admin (cadastros base)** **[INFERIDO]**
+8. **Pagamentos (Ajuda de Custo) – Visualização por mês**
+9. **Admin – Ajuda de Custo (Parâmetros, Metas e Referências)**
+10. **Relatórios (Mensal/Trimestral)**
 
-## Campos por tela
+## Pagamentos (Ajuda de Custo) — campos e UX
 
-### 1) Militares — Listagem
-- Filtros: nome, matrícula, unidade, situação, regime **[INFERIDO]**
-- Colunas:
-  - matrícula
-  - nome de guerra
-  - posto/graduação
-  - unidade atual
-  - regime/escala habitual
-  - situação
-  - ações (abrir modal)
-
-### 2) Militar — Modal (ao clicar no nome)
-- Identificação:
-  - matrícula, nome completo, nome de guerra, posto/grad, situação
-- Lotação:
-  - unidade atual + histórico
-- Regime/Escala habitual:
-  - tipo regime, escala, vigência
-- Férias:
-  - início, fim original, **fim com acréscimo**
-- Banco de horas:
-  - saldo + extrato resumido (link para extrato completo)
-
-### 3) Pagamentos — Visualização (por mês)
-- Seletor de mês (competência)
+### Tela principal
+- Seletor de competência (YYYY-MM).
+- “Badge” de política aplicada:
+  - “COFIN 001/2025” ou “COFIN 002/2025”
+  - vigência
+- Campos informativos:
+  - teto fixa (1100) e teto variável (550) quando COFIN 002
+  - bimestre de referência e percentual de metas (se variável)
 - Filtros:
-  - unidade
-  - situação
-  - regime (operacional/administrativo)
-  - **percentual de ajuste** (campo editável)
-- Tabela:
-  - militar
-  - dias elegíveis
-  - valor calculado
-  - teto aplicado
-  - “ver memória de cálculo” (modal)
-- Modal “Memória de cálculo”:
-  - parâmetros usados (dias, base, teto, descontos)
-  - eventos que descontaram (férias/faltas/afastamentos)
-  - referência normativa resumida **[INFERIDO]**
+  - unidade, situação, regime
+  - **percentual de metas (simulação)** (se habilitado) **[ABERTO]**
+- Tabela por militar:
+  - base (dias/turnos)
+  - fixa (bruto, teto)
+  - variável (bruto, teto)
+  - total
+  - “ver memória”
 
-### 4) Dashboard (Home)
-- Cards:
-  - férias (fim original vs fim com acréscimo)
-  - pendências (fechamento aberto, inconsistências)
-  - atalhos para pagamentos/relatórios
+### Modal “Memória de Cálculo”
+- Lista de turnos/dias considerados com data-chave:
+  - em plantão, usar “dia do início”
+- Indicar regras do Decreto aplicadas (1 por dia; maior valor no mesmo dia; vedação de reaproveitamento)
+- Tabela de turnos (duração → valor de referência) quando aplicável
+- Metas (bimestre) com regra 70% (paga / não paga)
+- Totais e tetos
 
-## Regras de visibilidade/permissão **[ABERTO]**
-- Por escopo:
-  - usuário só vê militares/unidades do seu admin_scope.
-- Por perfil:
-  - consulta: apenas leitura
-  - operador: lança jornada
-  - gestor: publica escala, fecha mês, exporta
-  - admin: cadastros e correções especiais
+## Admin – Ajuda de Custo
+- **Parâmetros por vigência** (CRUD): valores diários, tetos, meta mínima, modo base da variável.
+- **Tabela de turnos** (CRUD por vigência): min/max minutos e valor.
+- **Metas por bimestre** (CRUD): percentual e status (provisório/definitivo/recorrido).
+- **Competência → bimestre** (CRUD): mapeamento e motivo (transição).
 
 ---
 
 # APIs e Contratos
 
-> Os contratos abaixo são descritos para orientar implementação. Payloads/respostas exatos podem variar conforme schema final.
+> Contratos orientativos (podem ser HTMX-first; JSON opcional no futuro).
 
-## Convenções HTMX
-- Se `HX-Request: true`:
-  - retornar partial (`_table.html`, `_modal.html`)
-- Caso contrário:
-  - retornar página completa (`index.html`)
+## Pagamentos (Ajuda de Custo)
+- `GET /pagamentos/ajuda-custo`
+  - Query: `competencia=YYYY-MM`
+  - Resposta: página completa
+- `GET /pagamentos/ajuda-custo/table?competencia=YYYY-MM&meta_simulada=...`
+  - Resposta HTMX: `_table.html`
+- `GET /pagamentos/ajuda-custo/<competencia>/<militar_id>/memoria`
+  - Resposta HTMX: `_calc_modal.html`
 
-## Endpoints (método, rota, payload, resposta)
-
-### Militares
-- `GET /militares`
-  - Resposta: página completa (listagem)
-- `GET /militares?query=...&unit=...`
-  - Resposta HTMX: partial `_table.html` (atualiza `#results`)
-- `GET /militares/<id>/modal`
-  - Resposta HTMX: partial `_modal.html` (renderiza em `#modal`)
-
-### Pagamentos
-- `GET /pagamentos`
-  - Página completa com seletor de mês
-- `GET /pagamentos?competencia=YYYY-MM&percentual=...`
-  - Partial `_table.html` com resultados e totais
-- `GET /pagamentos/<competencia>/<militar_id>/memoria`
-  - Partial `_calc_modal.html` com memória de cálculo
-
-### Escalas
-- `GET /escalas`
-- `POST /escalas/publicar`
-  - Payload **[ABERTO]**: competência, unidade, versão, itens
-- `GET /escalas/<id>/itens` (HTMX)
-
-### Lançamentos de Jornada
-- `GET /jornada`
-- `POST /jornada`
-  - Payload: tipo, período, horas, justificativa **[ABERTO]**
-- `GET /jornada/<id>/modal` (detalhes)
-
-### Banco de horas
-- `GET /banco-horas/<militar_id>`
-  - Resposta: extrato e saldo por período
-
-### Relatórios
-- `GET /relatorios`
-- `POST /relatorios/gerar`
-  - Payload: tipo (mensal/trimestral), período, escopo
-- `GET /relatorios/<id>/export?format=csv|pdf`
-  - Exporta o renderizado **[ABERTO: formato]**
+## Admin (Ajuda de Custo)
+- `GET /admin/ajuda-custo/policies`
+- `POST /admin/ajuda-custo/policies`
+- `GET /admin/ajuda-custo/turnos`
+- `POST /admin/ajuda-custo/turnos`
+- `GET /admin/ajuda-custo/metas`
+- `POST /admin/ajuda-custo/metas`
+- `GET /admin/ajuda-custo/referencias`
+- `POST /admin/ajuda-custo/referencias`
 
 ---
 
 # Estratégia de Testes
 
-## Testes de unidade (services)
-- Cálculo de jornada:
-  - 24x72: geração de créditos a cada 21 plantões.
-- Cálculo de dias elegíveis para ajuda de custo:
-  - descontar férias/faltas/afastamentos
-  - aplicar teto mensal **[ABERTO]**
-- Cálculo de fim com acréscimo nas férias.
+## Testes de unidade (services/ajuda_custo)
+- Resolver política por competência:
+  - antes/depois de 15/10/2025 (COFIN 001 vs 002)
+  - out/nov 2025: variável desabilitada (transição)
+- Tabela por turno:
+  - 24h → 160
+  - limites de faixa (06h30 vs 06h31 etc)
+- Plantão atravessando dia:
+  - contar pelo dia do início (sem duplicar)
+  - dois turnos no mesmo dia → escolher maior valor
+- Teto:
+  - fixo: cap em 1100
+  - variável: cap em 550
+  - total: coerente com somatório
+- Metas:
+  - 69% → variável zero
+  - 70% e 100% → proporcionalidade
 
-## Testes de integração (routes)
-- Endpoints HTMX retornam partial corretamente.
-- Permissões por escopo e perfil.
-- Bloqueio de duplicidade de fechamento/relatório (legado vs novo) **[ABERTO]**.
-
-## Testes de regressão de dados
-- Migrações e upgrades (`flask db upgrade`) em banco limpo e banco com dados.
-- Validação de integridade (sem órfãos após correções).
-
-## Testes manuais guiados (checklist)
-- Trocar escopo e garantir que a UI recarrega dados corretos.
-- Pagamentos: simular com percentual; comparar com teto esperado em cenário 24x72.
+## Casos de aceitação (importantes)
+- **Operacional 24x72 “normal”:** 7 plantões de 24h → fixa bate teto 1100; com meta 100% → total 1650.
+- **Administrativo:** 22 dias trabalhados no mês → fixa 1100; variável depende meta e teto 550.
+- **Férias/falta/sobreaviso:** não deve contar (conforme Memorando item 2.3) **[ABERTO: codificar lista completa]**.
+- **DSP/Diárias:** gerar glosa/compensação a partir da parcela alimentação **[ABERTO: fonte do valor]**.
 
 ---
 
@@ -668,76 +701,68 @@ erDiagram
 - **Motivo:** menor complexidade (sem build/estado), melhor alinhamento com backend, mais previsível para IA.
 - **Impacto:** padronização forte de templates/macros/partials; interações ricas via HTMX.
 
-## ADR-002 — UI Componentizada por Macros Jinja + Partials HTMX
-- **Contexto:** risco de “espaguete de templates”.
-- **Decisão:** criar kit de componentes (macros) e contratos de partials `_table.html`/`_modal.html`.
-- **Motivo:** reuso, consistência visual e rapidez.
-- **Impacto:** novas telas devem seguir estrutura padrão (lego).
-
-## ADR-003 — Remover Importação (módulo legado)
-- **Contexto:** tela de importações não reflete arquitetura atual; risco de quebrar sistema.
-- **Decisão:** remover código de importação, mantendo funcionalidades intactas.
-- **Motivo:** reduzir complexidade e dívida técnica.
-- **Impacto:** novos fluxos de carga de dados serão redesenhados depois **[ABERTO]**.
-
 ## ADR-004 — Exportação apenas do renderizado (relatórios/consultas)
 - **Contexto:** desejo de não manter export genérico de tabelas/BD.
 - **Decisão:** implementar export somente a partir de tabelas renderizadas.
 - **Motivo:** reduz acoplamento e evita inconsistências.
 - **Impacto:** export precisa “congelar” a visão (hash/render) **[INFERIDO]**.
 
-## ADR-005 — Exibir fim de férias com acréscimos
-- **Contexto:** UI atual mostrava apenas fim cadastrado; necessidade de transparência.
-- **Decisão:** exibir fim original e fim com acréscimos (calculado).
-- **Motivo:** clareza para usuário e redução de dúvidas.
-- **Impacto:** exige modelagem de acréscimos e cálculo na view/service.
+## ADR-007 — Ajuda de Custo parametrizada por vigência (COFIN 001/002)
+- **Contexto:** normas mudam; teto e composição mudaram (fixa/variável/metas).
+- **Decisão:** materializar normas em tabelas `ajuda_custo_*` por vigência e resolver política por competência.
+- **Motivo:** evita hardcode e facilita atualização.
+- **Impacto:** exige telas admin e memória de cálculo com “snapshot” dos parâmetros.
 
-## ADR-006 — Pagamentos com filtro percentual ajustável
-- **Contexto:** preferir ajuste via campo percentual para simulações/parametrizações.
-- **Decisão:** incluir campo percentual na tela de pagamentos.
-- **Motivo:** flexibilidade sem alterar regra base a cada teste.
-- **Impacto:** memória de cálculo deve registrar percentual usado.
+## ADR-008 — Operacional usa tabela por turno (Memorando 02/2025) e respeita vedações do Decreto
+- **Contexto:** operacional 24x72 recebe teto em normalidade; cálculo por “dias calendário” não reflete.
+- **Decisão:** para regime de plantão, apurar por turno (tabela do Memorando), limitando por teto e aplicando:
+  - 1 por dia,
+  - plantão pelo dia do início,
+  - escolher maior valor se dois turnos no mesmo dia.
+- **Motivo:** aderência ao Decreto e ao Memorando.
+- **Impacto:** exige dados de início/fim do turno e uma camada de agregação por dia do início.
+
+## ADR-009 — Parcela variável: base por “dias equivalentes” (provisório) **[ABERTO]**
+- **Contexto:** COFIN 002 autoriza adequação e introduz variável por dia; não há tabela explícita para variável em plantões.
+- **Decisão:** implementar `variable_base_mode` com default `EQUIVALENT_DAYS` e manter alternativa `CALENDAR_DAYS`.
+- **Motivo:** permitir validação contra folha/entendimento oficial sem reescrever código.
+- **Impacto:** decisão final deve ser registrada após validação.
 
 ---
 
 # Pendências e Próximos Passos
 
-1. **Consolidar regras de teto/limites vigentes** para pagamento mensal (resoluções conjuntas COFIN/PMMG e COFIN/CBMMG) e refletir no cálculo da tela de pagamentos. **[ABERTO]**
-2. Definir **catálogo oficial de regimes/escalas** suportadas no MVP (além do 24x72). **[ABERTO]**
-3. Fechar schema real de tabelas já existentes (ex.: `militar_day_balances`, “fechamentos” legados) e ajustar ER/SQL. **[ABERTO]**
-4. Definir política de **perfis/permissões** e telas visíveis por perfil. **[ABERTO]**
-5. Implementar “UI Kit” (macros) + 1 tela modelo (recomendado: **Militares** e/ou **Pagamentos**).
-6. Definir padrão de export (CSV/PDF) e biblioteca (ReportLab/WeasyPrint/etc.) **[ABERTO]**
-7. Definir estratégia de “compatibilidade com legado”:
-   - como identificar fechamento legado
-   - como bloquear/conciliar períodos.
+1. **Implementar tabelas `ajuda_custo_*`** e seed inicial com COFIN 001/002 e a tabela do Memorando.
+2. Implementar serviço `AjudaCustoPolicyResolver` + `AjudaCustoCalculator` + geração de memória.
+3. Criar telas admin para:
+   - parâmetros por vigência
+   - metas por bimestre
+   - competência → bimestre (transição)
+4. Validar com casos reais (incluindo operacional 24x72 que bate teto):
+   - comparar com folha em pelo menos 3 competências.
+5. Fechar decisões **[ABERTO]**:
+   - base da variável (dias equivalentes vs dias calendário)
+   - regra competência (mês de referência) vs mês de pagamento e glosas em folha subsequente
+   - definição de “dias úteis” para regime diário e como tratar feriados/ponto facultativo.
 
 ---
 
 # Riscos e Pontos de Atenção
 
-1. **Cálculo de pagamentos**: alto risco de divergência se teto/parametrização não estiverem corretos e atualizados.
-2. **Dados legados**: risco de duplicidade e inconsistência (relatórios/fechamentos) se não houver trava clara por período/escopo.
-3. **Integridade de saldos**: correções pontuais no banco exigem procedimento padrão e auditoria.
-4. **Templates**: sem macros e padrões HTMX, o front vira difícil de manter.
-5. **Permissões por escopo**: risco de “dados aparecendo no escopo errado” se filtros não forem centralizados no backend.
-6. **Auditoria**: ações como ajustes e fechamentos devem ser rastreáveis (quem/quando/por quê).
+1. **Mudanças normativas recorrentes:** necessidade de políticas por vigência e atualização sem mexer no código.
+2. **Base da variável no operacional:** se implementada errada, divergirá da folha (risco alto).
+3. **Dados de turnos incompletos:** sem início/fim do turno ou escala habitual, o cálculo fica inconsistente.
+4. **Glosas/compensações em folha subsequente:** risco de “competência vs pagamento” confundir usuário; UX precisa ser clara.
+5. **Permissões e auditoria:** parâmetros e metas são dados sensíveis (impactam pagamento), exigem controle e log.
 
 ---
 
 # Falta discutir/planejar
 
-1. **Definição final dos campos de Militares** (MVP fechado vs campos avançados). **[ABERTO]**
-2. **Modelagem oficial do Banco de Horas**:
-   - o que é “saldo” (horas, dias, ambos)
-   - como consolidar por competência
-   - como representar créditos automáticos (ex.: 21 plantões = 24h crédito).
-3. **Fechamento mensal/trimestral**:
-   - quando é permitido fechar
-   - quem pode fechar
-   - como reabrir
-   - como registrar versões e impedir duplicidade.
-4. **Catálogo de eventos de jornada** (tipos, regras de desconto, documentos).
-5. **Integração com sistemas externos** (SEI/SIGP) — apenas referência normativa, não definido tecnicamente.
-6. **Padrão visual (UI)**: escolher biblioteca (Bootstrap/Tabler/Tailwind) e definir layout base.
-7. **Estratégia de deploy/ambientes** (dev/staging/prod) e uso de Docker no desenvolvimento **[ABERTO]**.
+1. Tabela completa e codificação formal das situações:
+   - “mantém o direito” (Art. 3º do Decreto, itens do Memorando)
+   - “não é devida” (Memorando 2.3)
+   - “gera glosa/compensação” (DSP/diárias etc.)
+2. Integração (ou não) com SEI/relatórios formais de avaliação de metas (COFIN 002).
+3. Definição de política de feriados/ponto facultativo e “dia útil” no cálculo diário.
+4. Procedimento padrão para correções pontuais (saldo e pagamentos) e como auditar isso no sistema.
